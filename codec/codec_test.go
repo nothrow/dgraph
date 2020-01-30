@@ -304,3 +304,12 @@ func TestCopyUidPack(t *testing.T) {
 	copy := CopyUidPack(pack)
 	require.Equal(t, Decode(pack, 0), Decode(copy, 0))
 }
+
+func TestNumMsb(t *testing.T) {
+	// Roaring bitmaps support 32 bit integers, so the number of most significant bits in the base
+	// must cover at least 64 bits - 32 bits of a UID.
+	require.GreaterOrEqual(t, numMsb, uint8(32))
+	require.LessOrEqual(t, numMsb, uint8(64))
+	// require.Equal(t, msbBitMask, uint64(0xffffffff00000000)) // For when numMsb = 32
+	// require.Equal(t, msbBitMask, uint64(0xffffffffff000000)) // For when numMsb = 40
+}
